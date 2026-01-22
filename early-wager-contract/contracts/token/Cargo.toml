@@ -1,0 +1,18 @@
+[package]
+name = "token"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["lib", "cdylib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = { workspace = true }
+openzeppelin-fungible-token = { git = "https://github.com/OpenZeppelin/stellar-contracts", tag = "v0.1.0" }
+stellar-fungible = { git = "https://github.com/OpenZeppelin/stellar-contracts" }
+soroban-token-sdk = "22.0.7"
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
