@@ -29,7 +29,6 @@ const HomePage = () => {
   const [notification, setNotification] = useState(null);
   const [showSendModal, setShowSendModal] = useState(false);
 
-  // Fetch employee data when wallet connects
   useEffect(() => {
     if (walletAddress) {
       fetchEmployeeData();
@@ -40,10 +39,9 @@ const HomePage = () => {
     try {
       setIsLoading(true);
       const remaining = await getRemainingSalary(walletAddress, employeeId);
-      setAvailableBalance(remaining / 10000000); // Convert from stroops
+      setAvailableBalance(remaining / 10000000);
     } catch (error) {
       console.error("Error fetching employee data:", error);
-      // Use mock data for demo
       setAvailableBalance(3500);
     } finally {
       setIsLoading(false);
@@ -123,21 +121,14 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden relative">
-      {/* Animated background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-[128px] animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[128px] animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-fuchsia-500/10 rounded-full blur-[100px] animate-pulse delay-500" />
-      </div>
-
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Notification */}
       {notification && (
         <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-2xl backdrop-blur-xl border transition-all duration-500 animate-slide-in ${
+          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl border transition-all duration-500 animate-slide-in ${
             notification.type === "error"
-              ? "bg-red-500/20 border-red-500/30 text-red-200"
-              : "bg-emerald-500/20 border-emerald-500/30 text-emerald-200"
+              ? "bg-red-500/10 border-red-500/30 text-red-300"
+              : "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
           }`}
         >
           <div className="flex items-center gap-3">
@@ -148,42 +139,48 @@ const HomePage = () => {
       )}
 
       {/* Header */}
-      <header className="relative z-10 w-full border-b border-white/5 backdrop-blur-xl bg-white/[0.02]">
+      <header className="w-full border-b border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
-              <span className="text-xl font-bold">S</span>
+            <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center">
+              <svg className="w-5 h-5 text-[#0a0a0a]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
+              </svg>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-              StellarPay
-            </h1>
+            <span className="text-xl font-semibold text-white">StellarPay</span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-gray-400 hover:text-white transition-colors">Features</a>
+            <a href="#stats" className="text-gray-400 hover:text-white transition-colors">Stats</a>
+            <a href="#about" className="text-gray-400 hover:text-white transition-colors">About</a>
+          </nav>
+
+          <div className="flex items-center gap-3">
             {isConnected && (
               <button
                 onClick={() => setShowSendModal(true)}
-                className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 flex items-center gap-2"
+                className="px-4 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/5 transition-all flex items-center gap-2"
               >
                 <span>💸</span>
-                <span>Send XLM</span>
+                <span className="hidden sm:inline">Send XLM</span>
               </button>
             )}
 
             {isConnected ? (
-              <div className="flex items-center gap-3">
-                <div className="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <div className="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-emerald-300 font-mono text-sm">
+                  <span className="text-emerald-400 font-mono text-sm">
                     {formatAddress(walletAddress)}
                   </span>
                 </div>
                 <button
                   onClick={disconnectWallet}
-                  className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-red-500/20 hover:border-red-500/30 transition-all duration-300"
+                  className="p-2 rounded-lg border border-white/10 hover:bg-red-500/10 hover:border-red-500/30 transition-all"
                   title="Disconnect"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
                 </button>
@@ -192,62 +189,104 @@ const HomePage = () => {
               <button
                 onClick={connectWallet}
                 disabled={isConnecting}
-                className="group relative px-6 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-black font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-400 to-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity" />
-                <span className="relative font-semibold">
-                  {isConnecting ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      Connecting...
-                    </span>
-                  ) : (
-                    "Connect Wallet"
-                  )}
-                </span>
+                {isConnecting ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Connecting...
+                  </span>
+                ) : (
+                  "Connect Wallet ✦"
+                )}
               </button>
             )}
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+      {/* Hero Section */}
+      <section className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+              <span className="underline decoration-2 underline-offset-8">Think</span>{" "}
+              <span className="bg-gradient-to-r from-pink-300 to-purple-300 px-3 py-1">Secure</span>
+              <br />
+              <span className="text-white">Pay Effortlessly</span>
+            </h1>
+            
+            <div className="w-full h-px bg-white/10 my-8" />
+            
+            <p className="text-xl text-gray-400 leading-relaxed">
+              Your Gateway to Instant Remittances, Early Wage Access and Seamless Payroll.
+            </p>
+            
+            <div className="w-full h-px bg-white/10 my-8" />
+            
+            <div className="flex flex-wrap gap-4">
+              <button className="px-6 py-3 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-all flex items-center gap-2">
+                Know More
+                <span className="text-gray-500">ⓘ</span>
+              </button>
+              <button 
+                onClick={connectWallet}
+                className="px-6 py-3 rounded-lg bg-gradient-to-r from-pink-300/90 to-purple-300/90 text-black font-semibold hover:opacity-90 transition-all flex items-center gap-2"
+              >
+                Join the Waitlist
+                <span>✦</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Abstract Graphics */}
+          <div className="hidden lg:flex justify-center items-center relative">
+            <div className="relative w-80 h-80">
+              {/* Decorative shapes */}
+              <div className="absolute top-0 right-0 w-40 h-8 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full" />
+              <div className="absolute top-12 left-0 w-8 h-8 bg-gray-500 rounded-full" />
+              <div className="absolute top-20 right-8 w-40 h-8 bg-gradient-to-r from-gray-500 to-gray-600 rounded-full" />
+              <div className="absolute top-32 right-0 w-8 h-8 bg-gray-400 rounded-full" />
+              <div className="absolute top-40 left-8 w-40 h-8 bg-gradient-to-r from-gray-600 to-gray-500 rounded-full" />
+              <div className="absolute bottom-20 right-16 w-4 h-32 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full" />
+              <div className="absolute bottom-16 right-8 w-4 h-40 bg-gradient-to-b from-gray-300 to-gray-500 rounded-full" />
+              <div className="absolute bottom-24 right-0 w-4 h-28 bg-gradient-to-b from-gray-500 to-gray-700 rounded-full" />
+              <div className="absolute bottom-12 right-4 w-3 h-3 bg-white rounded-full" />
+              <div className="absolute top-28 right-20 w-3 h-3 bg-gray-400 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Warning Messages */}
+      <section className="max-w-7xl mx-auto px-6">
         {checkingInstallation ? (
-          <div className="mb-8 p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 backdrop-blur-xl">
+          <div className="mb-8 p-5 rounded-xl bg-[#111] border border-white/10">
             <div className="flex items-center gap-4">
-              <svg className="animate-spin h-8 w-8 text-blue-400" viewBox="0 0 24 24">
+              <svg className="animate-spin h-6 w-6 text-pink-400" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
               <div>
-                <h3 className="font-semibold text-blue-300">Checking for Freighter Wallet...</h3>
-                <p className="text-blue-200/70 text-sm mt-1">
-                  Please wait while we detect your wallet extension.
-                </p>
+                <h3 className="font-medium text-white">Checking for Freighter Wallet...</h3>
+                <p className="text-gray-500 text-sm mt-1">Please wait while we detect your wallet.</p>
               </div>
             </div>
           </div>
         ) : !isFreighterInstalled && !isConnected ? (
-          <div className="mb-8 p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 backdrop-blur-xl">
+          <div className="mb-8 p-5 rounded-xl bg-[#111] border border-amber-500/20">
             <div className="flex items-center gap-4">
-              <span className="text-3xl">🦊</span>
+              <span className="text-2xl">🦊</span>
               <div>
-                <h3 className="font-semibold text-amber-300">Freighter Wallet Required</h3>
-                <p className="text-amber-200/70 text-sm mt-1">
+                <h3 className="font-medium text-amber-400">Freighter Wallet Required</h3>
+                <p className="text-gray-500 text-sm mt-1">
                   Install Freighter wallet to access all features.{" "}
-                  <a
-                    href="https://freighter.app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-300 underline hover:text-amber-200"
-                  >
+                  <a href="https://freighter.app" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:underline">
                     Get Freighter →
                   </a>
-                  {" "}After installing, refresh this page. Or try clicking "Connect Wallet" if already installed.
                 </p>
               </div>
             </div>
@@ -255,60 +294,84 @@ const HomePage = () => {
         ) : null}
 
         {walletError && (
-          <div className="mb-8 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300">
+          <div className="mb-8 p-5 rounded-xl bg-red-500/5 border border-red-500/20 text-red-400">
             {walletError}
           </div>
         )}
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Features Grid */}
+      <section id="features" className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid md:grid-cols-2 gap-6">
+          <FeatureCard
+            icon={
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
+              </svg>
+            }
+            title="Early Wage Access"
+            description="Access your earned wages before payday. No more waiting, no more stress."
+          />
+          <FeatureCard
+            icon={
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 3v18h18" />
+                <path d="M18 9l-5 5-4-4-3 3" />
+              </svg>
+            }
+            title="Real-time Analytics"
+            description="Track your earnings, withdrawals, and spending patterns in real-time."
+          />
+        </div>
+      </section>
+
+      {/* Dashboard Section */}
+      <section className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Balance Card */}
           <div className="lg:col-span-2">
-            <div className="relative rounded-3xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-fuchsia-600/10 to-cyan-600/20" />
-              <div className="absolute inset-0 backdrop-blur-xl" />
-              <div className="relative p-8 border border-white/10 rounded-3xl">
-                <div className="flex items-start justify-between mb-8">
-                  <div>
-                    <p className="text-white/50 text-sm font-medium uppercase tracking-wider">
-                      Available Balance
-                    </p>
-                    <div className="flex items-baseline gap-2 mt-2">
-                      <span className="text-6xl font-bold bg-gradient-to-r from-white via-violet-200 to-cyan-200 bg-clip-text text-transparent">
-                        ${availableBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </span>
-                    </div>
-                    <p className="text-white/40 text-sm mt-2">
-                      of ${monthlySalary.toLocaleString()} monthly salary
-                    </p>
+            <div className="rounded-2xl bg-[#111] border border-white/[0.08] p-8">
+              <div className="flex items-start justify-between mb-8">
+                <div>
+                  <p className="text-gray-500 text-sm font-medium uppercase tracking-wider">
+                    Available Balance
+                  </p>
+                  <div className="flex items-baseline gap-2 mt-2">
+                    <span className="text-5xl font-bold text-white">
+                      ${availableBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-xs text-white/60">Testnet</span>
-                  </div>
+                  <p className="text-gray-600 text-sm mt-2">
+                    of ${monthlySalary.toLocaleString()} monthly salary
+                  </p>
                 </div>
-
-                {/* Progress Bar */}
-                <div className="mb-8">
-                  <div className="flex justify-between text-sm text-white/50 mb-2">
-                    <span>Withdrawn</span>
-                    <span>{((1 - availableBalance / monthlySalary) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-violet-500 to-cyan-500 rounded-full transition-all duration-500"
-                      style={{ width: `${((monthlySalary - availableBalance) / monthlySalary) * 100}%` }}
-                    />
-                  </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span className="text-xs text-gray-500">Testnet</span>
                 </div>
-
-                {/* Withdraw Form */}
-                <WithdrawForm
-                  onWithdraw={handleWithdraw}
-                  maxAmount={availableBalance}
-                  isLoading={isLoading}
-                  isConnected={isConnected}
-                />
               </div>
+
+              {/* Progress Bar */}
+              <div className="mb-8">
+                <div className="flex justify-between text-sm text-gray-500 mb-2">
+                  <span>Withdrawn</span>
+                  <span>{((1 - availableBalance / monthlySalary) * 100).toFixed(1)}%</span>
+                </div>
+                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-pink-400 to-purple-400 rounded-full transition-all duration-500"
+                    style={{ width: `${((monthlySalary - availableBalance) / monthlySalary) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              <WithdrawForm
+                onWithdraw={handleWithdraw}
+                maxAmount={availableBalance}
+                isLoading={isLoading}
+                isConnected={isConnected}
+              />
             </div>
           </div>
 
@@ -322,32 +385,16 @@ const HomePage = () => {
             <TransactionHistory transactions={transactions} />
           </div>
         </div>
+      </section>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <StatCard
-            icon="📊"
-            label="Fee Rate"
-            value="1.25%"
-            subtext="Per advance"
-            color="violet"
-          />
-          <StatCard
-            icon="⚡"
-            label="Processing"
-            value="~5 sec"
-            subtext="Stellar network"
-            color="cyan"
-          />
-          <StatCard
-            icon="🔒"
-            label="Contract"
-            value="Verified"
-            subtext="Soroban smart contract"
-            color="emerald"
-          />
+      {/* Stats Section */}
+      <section id="stats" className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <StatCard icon="📊" label="Fee Rate" value="1.25%" subtext="Per advance" />
+          <StatCard icon="⚡" label="Processing" value="~5 sec" subtext="Stellar network" />
+          <StatCard icon="🔒" label="Contract" value="Verified" subtext="Soroban smart contract" />
         </div>
-      </main>
+      </section>
 
       {/* Send Money Modal */}
       {showSendModal && (
@@ -359,21 +406,15 @@ const HomePage = () => {
       )}
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/5 mt-16">
+      <footer className="border-t border-white/[0.08] mt-16">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/30 text-sm">
+          <p className="text-gray-600 text-sm">
             Built on Stellar • Powered by Soroban Smart Contracts
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-white/30 hover:text-white/60 transition-colors text-sm">
-              Documentation
-            </a>
-            <a href="#" className="text-white/30 hover:text-white/60 transition-colors text-sm">
-              GitHub
-            </a>
-            <a href="#" className="text-white/30 hover:text-white/60 transition-colors text-sm">
-              Support
-            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-400 transition-colors text-sm">Documentation</a>
+            <a href="#" className="text-gray-600 hover:text-gray-400 transition-colors text-sm">GitHub</a>
+            <a href="#" className="text-gray-600 hover:text-gray-400 transition-colors text-sm">Support</a>
           </div>
         </div>
       </footer>
@@ -381,26 +422,29 @@ const HomePage = () => {
   );
 };
 
-// Stat Card Component
-const StatCard = ({ icon, label, value, subtext, color }) => {
-  const colorClasses = {
-    violet: "from-violet-500/20 to-violet-600/5 border-violet-500/20",
-    cyan: "from-cyan-500/20 to-cyan-600/5 border-cyan-500/20",
-    emerald: "from-emerald-500/20 to-emerald-600/5 border-emerald-500/20",
-  };
-
-  return (
-    <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${colorClasses[color]} border backdrop-blur-xl p-6`}>
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-white/50 text-sm">{label}</p>
-          <p className="text-2xl font-bold mt-1">{value}</p>
-          <p className="text-white/30 text-xs mt-1">{subtext}</p>
-        </div>
-        <span className="text-3xl">{icon}</span>
-      </div>
+// Feature Card Component
+const FeatureCard = ({ icon, title, description }) => (
+  <div className="rounded-2xl bg-[#111] border border-white/[0.08] p-6">
+    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 mb-4">
+      {icon}
     </div>
-  );
-};
+    <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+    <p className="text-gray-500 text-sm">{description}</p>
+  </div>
+);
+
+// Stat Card Component
+const StatCard = ({ icon, label, value, subtext }) => (
+  <div className="rounded-2xl bg-[#111] border border-white/[0.08] p-6">
+    <div className="flex items-start justify-between">
+      <div>
+        <p className="text-gray-500 text-sm">{label}</p>
+        <p className="text-2xl font-bold text-white mt-1">{value}</p>
+        <p className="text-gray-600 text-xs mt-1">{subtext}</p>
+      </div>
+      <span className="text-2xl">{icon}</span>
+    </div>
+  </div>
+);
 
 export default HomePage;
