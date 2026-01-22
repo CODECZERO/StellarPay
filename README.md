@@ -21,29 +21,29 @@
 
 ---
 
-## 📌 About
+##  About
 
 **StellarPay** is a next-generation remittance and payroll platform built on the **Stellar blockchain**. We leverage Soroban smart contracts to provide:
 
-- 🌍 **Remittance Payments** — Cross-border money transfers with near-zero fees
-- 💰 **Early Wage Access (EWA)** — Get paid as you earn, no more waiting for payday
-- 🏢 **On/Off-Ramp Payroll** — Modern global payroll infrastructure for remote teams
+-  **Remittance Payments** — Cross-border money transfers with near-zero fees
+-  **Early Wage Access (EWA)** — Get paid as you earn, no more waiting for payday
+-  **On/Off-Ramp Payroll** — Modern global payroll infrastructure for remote teams
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                          StellarPay                                  │
+│                          StellarPay                                 │
 ├─────────────────┬─────────────────────┬─────────────────────────────┤
 │     Client      │     Go Backend      │     Smart Contracts         │
-│   (React/Vite)  │    (Horizon SDK)    │   (Rust/Soroban)           │
+│   (React/Vite)  │    (Horizon SDK)    │   (Rust/Soroban)            │
 ├─────────────────┼─────────────────────┼─────────────────────────────┤
-│ • Freighter     │ • XLM Transfers     │ • EarlyWage Contract       │
-│   Wallet        │ • Transaction       │ • Token Contract           │
-│ • Soroban SDK   │   Signing           │ • Vault Management         │
-│ • TailwindCSS   │ • CORS Support      │ • Employee Registry        │
+│ • Freighter     │ • XLM Transfers     │ • EarlyWage Contract        │
+│   Wallet        │ • Transaction       │ • Token Contract            │
+│ • Soroban SDK   │   Signing           │ • Vault Management          │
+│ • TailwindCSS   │ • CORS Support      │ • Employee Registry         │
 └─────────────────┴─────────────────────┴─────────────────────────────┘
                               │
                     ┌─────────┴─────────┐
@@ -66,7 +66,7 @@
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -117,7 +117,7 @@ The app will be running at `http://localhost:5173`
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Stellar-Pay/
@@ -153,7 +153,7 @@ Stellar-Pay/
 
 ---
 
-## 📜 Smart Contract Functions
+##  Smart Contract Functions
 
 ### Early Wage Contract
 
@@ -168,9 +168,9 @@ Stellar-Pay/
 
 ---
 
-## 🔥 Why StellarPay?
+##  Why StellarPay?
 
-### 📊 Market Opportunity
+###  Market Opportunity
 
 | Segment | Market Size | Problem | Our Solution |
 |---------|-------------|---------|--------------|
@@ -178,7 +178,7 @@ Stellar-Pay/
 | **EWA** | $200B+ by 2030 | 70%+ live paycheck-to-paycheck | Real-time earned wage access |
 | **Global Payroll** | $40B+ (2024) | Complex cross-border payments | Crypto on/off-ramps |
 
-### ⚡ Stellar Advantage
+###  Stellar Advantage
 
 | Feature | Traditional | StellarPay |
 |---------|-------------|------------|
