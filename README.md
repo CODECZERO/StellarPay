@@ -1,161 +1,351 @@
-<h1 align="center"> StellarPay</h1>
+<div align="center">
 
-<p align="center">
-  <strong>Fast, Cheap & Borderless Payrolls for the World</strong><br>
-  <em>Built on Stellar Blockchain — powering global remittance, Early Wage Access (EWA), and modern payroll systems.</em>
-</p>
+# 💫 StellarPay
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/20dffb3d-40b8-4f75-81d0-a46f6458f189" width="600" alt="StellarPay UI" />
-</p>
+### Fast, Cheap & Borderless Payrolls for the World
 
----
+[![Stellar](https://img.shields.io/badge/Stellar-Testnet-7C3AED?style=for-the-badge&logo=stellar&logoColor=white)](https://stellar.org)
+[![Soroban](https://img.shields.io/badge/Soroban-Smart%20Contracts-06B6D4?style=for-the-badge)](https://soroban.stellar.org)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![Go](https://img.shields.io/badge/Go-Backend-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
+[![Rust](https://img.shields.io/badge/Rust-Contracts-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-<h2>📌 About the Project</h2>
+*Built on Stellar Blockchain — powering global remittance, Early Wage Access (EWA), and modern payroll systems.*
 
-<p><strong>StellarPay</strong> is a next-gen remittance and payroll platform built on the <span style="color:#0f62fe"><strong>Stellar blockchain</strong></span>.</p>
+<img src="https://github.com/user-attachments/assets/20dffb3d-40b8-4f75-81d0-a46f6458f189" width="700" alt="StellarPay UI" />
 
-<p>We focus on three major finance use-cases:</p>
+[Live Demo](#-live-demo) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
-<ul>
-  <li> <strong>Remittance Payments</strong> (cross-border money transfers)</li>
-  <li> <strong>Early Wage Access (EWA)</strong> (get paid as you earn)</li>
-  <li> <strong>On/Off-Ramp Payroll Systems</strong> (modern global payroll infrastructure)</li>
-</ul>
+</div>
 
 ---
 
-<h2>⚙️ Tech Stack</h2>
+## 📌 About
 
-<ul>
-  <li><strong>Frontend</strong>: <span style="color:#0f62fe">Next.js</span>, <span style="color:#38bdf8">TailwindCSS</span></li>
-  <li><strong>Backend / Auth / DB</strong>: <span style="color:#fc7303">Supabase</span></li>
-  <li><strong>Blockchain</strong>: <span style="color:#8c52ff">Stellar Network</span></li>
-</ul>
+**StellarPay** is a next-generation remittance and payroll platform built on the **Stellar blockchain**. We leverage Soroban smart contracts to provide:
 
----
-
-<h2>🧠 Technical Architecture</h2>
-
-<p>StellarPay’s architecture is optimized for scalability, decentralization, and speed. It utilizes modern frontend/backend stacks and is powered by Stellar's Soroban smart contracts.</p>
-
-<ul>
-  <li><strong>Frontend</strong>: Next.js + TailwindCSS</li>
-  <li><strong>Backend</strong>: Supabase (PostgreSQL, Auth, Realtime)</li>
-  <li><strong>Blockchain</strong>: Stellar Smart Contracts (Soroban)</li>
-  <li><strong>Wallet Integration</strong>: Stellar WalletKit / Albedo / Freighter</li>
-  <li><strong>Deployment</strong>: Vercel / Docker / Stellar Horizon APIs</li>
-</ul>
-
-<p align="center">
-<h3>  <strong>🗂️ System Architecture Diagram</strong> </h3><br>
-  <img src="https://github.com/user-attachments/assets/2ab5ae80-053f-4d45-80b9-4ba64198ef73" alt="Architecture Diagram" width="800"/>
-</p>
-
+- 🌍 **Remittance Payments** — Cross-border money transfers with near-zero fees
+- 💰 **Early Wage Access (EWA)** — Get paid as you earn, no more waiting for payday
+- 🏢 **On/Off-Ramp Payroll** — Modern global payroll infrastructure for remote teams
 
 ---
 
-<h2>🧪 Setup & Running Locally</h2>
+## 🏗️ Architecture
 
-<pre>
-git clone https://github.com/your-username/stellar-pay.git
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                          StellarPay                                  │
+├─────────────────┬─────────────────────┬─────────────────────────────┤
+│     Client      │     Go Backend      │     Smart Contracts         │
+│   (React/Vite)  │    (Horizon SDK)    │   (Rust/Soroban)           │
+├─────────────────┼─────────────────────┼─────────────────────────────┤
+│ • Freighter     │ • XLM Transfers     │ • EarlyWage Contract       │
+│   Wallet        │ • Transaction       │ • Token Contract           │
+│ • Soroban SDK   │   Signing           │ • Vault Management         │
+│ • TailwindCSS   │ • CORS Support      │ • Employee Registry        │
+└─────────────────┴─────────────────────┴─────────────────────────────┘
+                              │
+                    ┌─────────┴─────────┐
+                    │  Stellar Testnet  │
+                    │   (Soroban RPC)   │
+                    └───────────────────┘
+```
+
+---
+
+## ⚙️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 19, Vite, TailwindCSS 4, Stellar SDK |
+| **Backend** | Go, Stellar Horizon SDK |
+| **Smart Contracts** | Rust, Soroban SDK |
+| **Wallet** | Freighter Browser Extension |
+| **Network** | Stellar Testnet |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** v18+ and npm
+- **Go** v1.21+
+- **Rust** and Cargo (for contract development)
+- **Freighter Wallet** browser extension ([Install](https://freighter.app))
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/your-username/Stellar-Pay.git
+cd Stellar-Pay
+```
+
+### 2️⃣ Start the Go Backend
+
+```bash
+cd Go-Sdk
+go mod download
+go run main.go
+```
+
+The API will be running at `http://localhost:8080`
+
+**Available Endpoints:**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/send` | Send XLM to a recipient |
+| GET | `/api/health` | Health check |
+
+### 3️⃣ Start the React Client
+
+```bash
 cd client
 npm install
 npm run dev
-</pre>
+```
 
-<p>The app runs at <code>http://localhost:3000</code></p>
+The app will be running at `http://localhost:5173`
 
----
+### 4️⃣ Connect Your Wallet
 
-<h2>🔥 Why StellarPay Matters</h2>
-
-<h3 style="color:#facc15;">📊 Remittance Market</h3>
-<ul>
-  <li><strong>Global remittance flows (2023)</strong>: $860B+</li>
-  <li><strong>Problem:</strong> 6–8% transaction fees, 1–5 day transfers</li>
-  <li><strong>Solution:</strong> StellarPay enables near-zero fees and <strong>~5 second</strong> transfers</li>
-</ul>
-
-<h3 style="color:#22c55e;">💼 Early Wage Access (EWA)</h3>
-<ul>
-  <li><strong>US market (2024)</strong>: $20B+</li>
-  <li><strong>Projected global size (2030)</strong>: $200B+</li>
-  <li><strong>Problem:</strong> 70%+ workers live paycheck-to-paycheck</li>
-  <li><strong>Solution:</strong> Real-time earned wage access, no middlemen</li>
-</ul>
-
-<h3 style="color:#0ea5e9;">🌐 Global Payroll Systems</h3>
-<ul>
-  <li><strong>Market size (2024)</strong>: $40B+</li>
-  <li><strong>Trend:</strong> Global, remote teams need better cross-border payroll</li>
-  <li><strong>Solution:</strong> Crypto on/off-ramps simplify this process</li>
-</ul>
+1. Install [Freighter Wallet](https://freighter.app)
+2. Create/import a testnet account
+3. Fund your account using [Stellar Friendbot](https://friendbot.stellar.org/?addr=YOUR_ADDRESS)
+4. Connect wallet in the StellarPay app
 
 ---
 
-<h2>⚡ Why Stellar?</h2>
+## 📁 Project Structure
 
-<table>
-  <tr>
-    <th>Feature</th><th>Traditional</th><th>StellarPay</th>
-  </tr>
-  <tr>
-    <td>Transfer Fees</td><td>6–8%</td><td><strong style="color:#16a34a;">~$0.00001</strong></td>
-  </tr>
-  <tr>
-    <td>Transfer Time</td><td>1–5 days</td><td><strong style="color:#16a34a;">~5 seconds</strong></td>
-  </tr>
-  <tr>
-    <td>Bank Required</td><td>Yes</td><td>No</td>
-  </tr>
-  <tr>
-    <td>Global Access</td><td>Limited</td><td><strong>Borderless</strong></td>
-  </tr>
-</table>
+```
+Stellar-Pay/
+├── client/                    # React Frontend
+│   ├── src/
+│   │   ├── components/        # UI Components
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── WithdrawForm.jsx
+│   │   │   ├── PayCycleProgress.jsx
+│   │   │   ├── TransactionHistory.jsx
+│   │   │   └── SendMoneyModal.jsx
+│   │   ├── hooks/             # Custom React Hooks
+│   │   │   └── useWallet.js   # Freighter integration
+│   │   ├── services/          # API & Blockchain Services
+│   │   │   ├── apiService.js  # Go backend client
+│   │   │   └── sorobanService.js  # Smart contract interactions
+│   │   └── App.jsx
+│   └── package.json
+│
+├── Go-Sdk/                    # Go Backend
+│   ├── main.go                # API server & Stellar transactions
+│   ├── go.mod
+│   └── go.sum
+│
+├── early-wager-contract/      # Soroban Smart Contracts
+│   └── contracts/
+│       ├── early-wage/        # Main EWA contract
+│       │   └── src/lib.rs
+│       └── token/             # Token contract
+│           └── src/
+└── README.md
+```
 
 ---
 
-<h2>📸 Screenshots</h2>
+## 📜 Smart Contract Functions
 
-<table>
-  <tr>
-    <th>Login Page</th><th>Dashboard</th>
-  </tr>
-  <tr>
-    <td> <img src="https://github.com/user-attachments/assets/20dffb3d-40b8-4f75-81d0-a46f6458f189" width="200" /></td>
-    <td><img src="https://github.com/user-attachments/assets/e4ea8ff2-b82a-4114-bd9b-4d672636bae6" width="200"/></td>
+### Early Wage Contract
+
+| Function | Description |
+|----------|-------------|
+| `register_employee(wallet, salary)` | Register new employee |
+| `deposit_to_vault(from, amount, token)` | Deposit funds to company vault |
+| `request_advance(emp_id, amount, token)` | Request salary advance (1.25% fee) |
+| `get_remaining_salary(emp_id)` | Check available salary balance |
+| `release_remaining_salary(emp_id, token, salary)` | Release remaining salary |
+| `vault_balance(token)` | Get vault balance |
+
+---
+
+## 🔥 Why StellarPay?
+
+### 📊 Market Opportunity
+
+| Segment | Market Size | Problem | Our Solution |
+|---------|-------------|---------|--------------|
+| **Remittance** | $860B+ (2023) | 6-8% fees, 1-5 day transfers | Near-zero fees, ~5 sec transfers |
+| **EWA** | $200B+ by 2030 | 70%+ live paycheck-to-paycheck | Real-time earned wage access |
+| **Global Payroll** | $40B+ (2024) | Complex cross-border payments | Crypto on/off-ramps |
+
+### ⚡ Stellar Advantage
+
+| Feature | Traditional | StellarPay |
+|---------|-------------|------------|
+| Transfer Fees | 6–8% | **~$0.00001** |
+| Transfer Time | 1–5 days | **~5 seconds** |
+| Bank Required | Yes | **No** |
+| Global Access | Limited | **Borderless** |
+
+---
+
+## 🤝 Contributing
+
+We love contributions! StellarPay is open source and we welcome developers of all skill levels.
+
+### How to Contribute
+
+1. **Fork the repository**
+   ```bash
+   git clone https://github.com/your-username/Stellar-Pay.git
+   ```
+
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+
+3. **Make your changes**
+   - Follow existing code style
+   - Add tests if applicable
+   - Update documentation
+
+4. **Commit your changes**
+   ```bash
+   git commit -m "feat: add amazing feature"
+   ```
    
+   We follow [Conventional Commits](https://www.conventionalcommits.org/):
+   - `feat:` New feature
+   - `fix:` Bug fix
+   - `docs:` Documentation
+   - `style:` Formatting
+   - `refactor:` Code restructuring
+   - `test:` Adding tests
+   - `chore:` Maintenance
+
+5. **Push and create a Pull Request**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
+### 🐛 Reporting Issues
+
+Found a bug? Please [open an issue](https://github.com/your-username/Stellar-Pay/issues/new) with:
+- Clear description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots if applicable
+
+### 💡 Feature Requests
+
+Have an idea? We'd love to hear it! [Open a feature request](https://github.com/your-username/Stellar-Pay/issues/new) and describe:
+- The problem you're trying to solve
+- Your proposed solution
+- Any alternatives you've considered
+
+### 📋 Good First Issues
+
+New to the project? Look for issues labeled:
+- `good first issue` — Great for newcomers
+- `help wanted` — We need your help!
+- `documentation` — Help improve our docs
+
+---
+
+## 🛠️ Development
+
+### Running Tests
+
+```bash
+# Client tests
+cd client
+npm test
+
+# Contract tests
+cd early-wager-contract
+cargo test
+```
+
+### Building for Production
+
+```bash
+# Build client
+cd client
+npm run build
+
+# Build contracts
+cd early-wager-contract/contracts/early-wage
+make build
+```
+
+### Environment Variables
+
+Create a `.env` file in the client directory:
+
+```env
+VITE_RPC_URL=https://soroban-testnet.stellar.org
+VITE_NETWORK=TESTNET
+VITE_CONTRACT_TOKEN=your_token_contract_address
+VITE_CONTRACT_WAGE=your_wage_contract_address
+```
+
+---
+
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td align="center"><strong>Dashboard</strong></td>
+    <td align="center"><strong>Withdraw</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/20dffb3d-40b8-4f75-81d0-a46f6458f189" width="400" /></td>
+    <td><img src="https://github.com/user-attachments/assets/e4ea8ff2-b82a-4114-bd9b-4d672636bae6" width="400"/></td>
   </tr>
 </table>
 
 ---
 
-<h2>📍 Future Scope</h2>
+## 🗺️ Roadmap
 
-<ul>
-  <li>🔐 Stellar Smart Contract support</li>
-  <li>📲 Mobile app version (React Native)</li>
-  <li>🌐 More on/off-ramp integrations per region</li>
-  <li>📈 Live FX rate optimization engine</li>
-</ul>
-
----
-
-<h2>📢 Live Demo</h2>
-
-<p><em>Coming soon... 🔗</em></p>
+- [x] Core EWA smart contract
+- [x] React frontend with Freighter integration
+- [x] Go backend for XLM transfers
+- [ ] Mobile app (React Native)
+- [ ] Multi-currency support
+- [ ] Employer dashboard
+- [ ] Live FX rate optimization
+- [ ] Mainnet deployment
 
 ---
 
-<h2>🤝 Contributing</h2>
+## 📢 Live Demo
 
-<p>We welcome contributions!<br>
-Please open an issue or submit a pull request.</p>
+🔗 **Coming soon...**
 
 ---
 
-<h2>📄 License</h2>
+## 🙏 Acknowledgments
 
-<p><strong>MIT License © 2025 StellarPay Team</strong></p>
+- [Stellar Development Foundation](https://stellar.org)
+- [Soroban Smart Contracts](https://soroban.stellar.org)
+- [Freighter Wallet](https://freighter.app)
 
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Built with 💜 by the StellarPay Team**
+
+⭐ Star this repo if you find it useful!
+
+[Report Bug](https://github.com/your-username/Stellar-Pay/issues) · [Request Feature](https://github.com/your-username/Stellar-Pay/issues)
+
+</div>
