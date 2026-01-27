@@ -2,6 +2,12 @@
 
 # StellarPay
 
+Stellar-MBC
+
+
+A three-month open-source builder journey on Stellar.
+Focused on real, core contributions—no low-effort PRs.
+$2,000 rewarded every month to validated builders.
 ### Fast, Cheap & Borderless Payrolls for the World
 
 [![Stellar](https://img.shields.io/badge/Stellar-Testnet-7C3AED?style=for-the-badge&logo=stellar&logoColor=white)](https://stellar.org)
