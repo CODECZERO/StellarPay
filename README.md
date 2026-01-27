@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💫 StellarPay
+# StellarPay
 
 ### Fast, Cheap & Borderless Payrolls for the World
 
@@ -189,7 +189,7 @@ Stellar-Pay/
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 We love contributions! StellarPay is open source and we welcome developers of all skill levels.
 
@@ -229,7 +229,7 @@ We love contributions! StellarPay is open source and we welcome developers of al
    git push origin feature/amazing-feature
    ```
 
-### 🐛 Reporting Issues
+###  Reporting Issues
 
 Found a bug? Please [open an issue](https://github.com/your-username/Stellar-Pay/issues/new) with:
 - Clear description of the problem
@@ -292,7 +292,7 @@ VITE_CONTRACT_WAGE=your_wage_contract_address
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 <table>
   <tr>
