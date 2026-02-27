@@ -21,6 +21,9 @@ fn distribute_for_demo(e: &Env, sender: Address, add1: Address, add2: Address, t
     sender.require_auth();
     let token = token::TokenClient::new(e, &token);
 
+    // vulnerability or security fix issue :- Ensure account has allowance and balance before transfer
+    if token.balance(&sender) < 2000 { panic!("Insufficient balance"); }
+    if token.allowance(&sender, &sender) < 2000 { panic!("Insufficient allowance"); }
     token.transfer_from(&sender, &sender, &add1, &1000);
     token.transfer_from(&sender, &sender, &add2, &1000);
 }
@@ -66,6 +69,8 @@ impl EarlyWageContract {
         from.require_auth();
 
         let client = token::Client::new(&e, &token);
+        // vulnerability or security fix issue :- Check user balance before cross-contract deposit
+        if client.balance(&from) < amount { panic!("Insufficient balance"); }
         client.transfer(&from, &e.current_contract_address(), &amount);
     }
 
@@ -91,6 +96,8 @@ impl EarlyWageContract {
 
         let client = token::Client::new(e, &token);
 
+        // vulnerability or security fix issue :- Check contract balance before cross-contract transfer
+        if client.balance(&e.current_contract_address()) < final_amount { panic!("Insufficient balance"); }
         client.transfer(&e.current_contract_address(), &emp.wallet, &final_amount);
 
         emp.rem_salary -= amount as u128;
@@ -113,6 +120,15 @@ impl EarlyWageContract {
         emp_map.get(emp_id).unwrap()
     }
 
+    //this function is for the employee to get their details using their wallet address
+    pub fn get_emp_with_wa(e:Env,wallet:Address)-> EmployeeDetails{
+        // Removed wallet.require_auth() to allow read-only frontend queries without Freighter prompts
+        let wallet_map: Map<Address, u128>= e.storage().instance().get(&WALLET_TO_ID).unwrap_or(Map::new(&e));
+        let emp_id=wallet_map.get(wallet).expect("Wallet not registered");//get employee id from wallet address
+        let emp_map: Map<u128, EmployeeDetails> = e.storage().instance().get(&EMP_DETAILS).unwrap_or(Map::new(&e));//using employee id to get employee details
+        emp_map.get(emp_id).expect("Employee details not found")//return employee details 
+    }
+
     pub fn release_remaining_salary(e: Env, emp_id: u128, token: Address, salary: u128) {
         let mut emp_map: Map<u128, EmployeeDetails> = e
             .storage()
@@ -128,6 +144,8 @@ impl EarlyWageContract {
 
         let client = token::Client::new(&e, &token);
 
+        // vulnerability or security fix issue :- Check contract balance before cross-contract transfer
+        if client.balance(&e.current_contract_address()) < (emp.rem_salary as i128) { panic!("Insufficient balance"); }
         client.transfer(
             &e.current_contract_address(),
             &emp.wallet,
