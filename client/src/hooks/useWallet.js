@@ -19,9 +19,9 @@ export function useWallet() {
       try {
         // Check if Freighter is connected/installed
         const { isConnected } = await freighterApi.isConnected();
-        
+
         if (!mounted) return;
-        
+
         setIsFreighterInstalled(true);
         setCheckingInstallation(false);
 
@@ -36,9 +36,8 @@ export function useWallet() {
           }
         }
       } catch (err) {
-        console.log("Freighter check error:", err);
         if (!mounted) return;
-        
+
         // If the error indicates Freighter is not installed
         if (err.message?.includes("Freighter") || err.message?.includes("extension")) {
           setIsFreighterInstalled(false);
@@ -64,7 +63,7 @@ export function useWallet() {
     try {
       // First check if Freighter is available
       const { isConnected } = await freighterApi.isConnected();
-      
+
       if (!isConnected) {
         setIsFreighterInstalled(false);
         throw new Error("Freighter wallet not detected. Please install from https://freighter.app");
@@ -80,22 +79,20 @@ export function useWallet() {
 
       if (address) {
         setWalletAddress(address);
-        
-        // Log the network for debugging
+
         try {
           const { network } = await freighterApi.getNetwork();
-          console.log("Connected to network:", network);
         } catch (e) {
-          console.log("Could not get network info");
+          // Silent fallback if network cannot be fetched
         }
-        
+
         return address;
       } else {
         throw new Error("Failed to get public key. Please unlock Freighter and try again.");
       }
     } catch (err) {
       console.error("Freighter connection error:", err);
-      
+
       if (err.message?.includes("User declined") || err.message?.includes("rejected")) {
         setError("Connection declined. Please approve in Freighter.");
       } else if (err.message?.includes("not detected") || err.message?.includes("not installed")) {
