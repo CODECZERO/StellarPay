@@ -19,6 +19,12 @@ const HomePage = () => {
     connectWallet,
     disconnectWallet,
     formatAddress,
+    // Multi-currency
+    tokenBalances,
+    selectedToken,
+    setSelectedToken,
+    exchangeRates,
+    loadingBalances,
   } = useWallet();
 
   const [lastWithdrawalDate, setLastWithdrawalDate] = useState(null);
@@ -59,21 +65,25 @@ const HomePage = () => {
     showNotification(`🎉 Welcome aboard! We'll notify you at ${email}`);
   };
 
-  const handleWithdraw = async (amount) => {
+  // Updated to accept token param from WithdrawForm
+  const handleWithdraw = async (amount, token) => {
     if (!walletAddress) {
       showNotification("Please connect your wallet first", "error");
       return;
     }
 
+    const activeToken = token || selectedToken;
+    const tokenAddress = activeToken?.isNative ? CONTRACTS.TOKEN : activeToken?.address;
+
     setIsLoading(true);
     try {
       const amountInStroops = Math.floor(parseFloat(amount) * 10000000);
-      
+
       const result = await requestAdvance(
         walletAddress,
         employeeId,
         amountInStroops,
-        CONTRACTS.TOKEN
+        tokenAddress || CONTRACTS.TOKEN
       );
 
       const fee = parseFloat(amount) * 0.0125;
@@ -86,13 +96,16 @@ const HomePage = () => {
         type: "Withdrawal",
         amount: netAmount,
         fee: fee,
+        currency: activeToken?.symbol || "XLM",
         date: new Date().toISOString(),
         hash: result.hash,
         status: "completed",
       };
 
       setTransactions((prev) => [newTransaction, ...prev]);
-      showNotification(`Successfully withdrew $${netAmount.toFixed(2)} (Fee: $${fee.toFixed(2)})`);
+      showNotification(
+        `Successfully withdrew ${netAmount.toFixed(4)} ${activeToken?.symbol || "XLM"} (Fee: ${fee.toFixed(4)})`
+      );
     } catch (error) {
       console.error("Withdrawal failed:", error);
       showNotification(error.message || "Withdrawal failed. Please try again.", "error");
@@ -105,7 +118,7 @@ const HomePage = () => {
     setIsLoading(true);
     try {
       const result = await sendLumens(recipient, amount);
-      
+
       const newTransaction = {
         type: "Send",
         amount: parseFloat(amount),
@@ -224,21 +237,21 @@ const HomePage = () => {
               <br />
               <span className="text-white">Pay Effortlessly</span>
             </h1>
-            
+
             <div className="w-full h-px bg-white/10 my-8" />
-            
+
             <p className="text-xl text-gray-400 leading-relaxed">
               Your Gateway to Instant Remittances, Early Wage Access and Seamless Payroll.
             </p>
-            
+
             <div className="w-full h-px bg-white/10 my-8" />
-            
+
             <div className="flex flex-wrap gap-4">
               <button className="px-6 py-3 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-all flex items-center gap-2">
                 Know More
                 <span className="text-gray-500">ⓘ</span>
               </button>
-              <button 
+              <button
                 onClick={() => setShowWaitlistModal(true)}
                 className="px-6 py-3 rounded-lg bg-gradient-to-r from-pink-300/90 to-purple-300/90 text-black font-semibold hover:opacity-90 transition-all flex items-center gap-2"
               >
@@ -251,7 +264,6 @@ const HomePage = () => {
           {/* Abstract Graphics */}
           <div className="hidden lg:flex justify-center items-center relative">
             <div className="relative w-80 h-80">
-              {/* Decorative shapes */}
               <div className="absolute top-0 right-0 w-40 h-8 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full" />
               <div className="absolute top-12 left-0 w-8 h-8 bg-gray-500 rounded-full" />
               <div className="absolute top-20 right-8 w-40 h-8 bg-gradient-to-r from-gray-500 to-gray-600 rounded-full" />
@@ -345,11 +357,15 @@ const HomePage = () => {
                   </p>
                   <div className="flex items-baseline gap-2 mt-2">
                     <span className="text-5xl font-bold text-white">
-                      ${availableBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      {selectedToken?.symbol || "XLM"}{" "}
+                      {availableBalance.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 4,
+                      })}
                     </span>
                   </div>
                   <p className="text-gray-600 text-sm mt-2">
-                    of ${monthlySalary.toLocaleString()} monthly salary
+                    of {selectedToken?.symbol || "XLM"} {monthlySalary.toLocaleString()} monthly salary
                   </p>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
@@ -372,11 +388,17 @@ const HomePage = () => {
                 </div>
               </div>
 
+              {/* WithdrawForm — multi-currency props passed in */}
               <WithdrawForm
                 onWithdraw={handleWithdraw}
                 maxAmount={availableBalance}
                 isLoading={isLoading}
                 isConnected={isConnected}
+                tokenBalances={tokenBalances}
+                selectedToken={selectedToken}
+                onTokenChange={setSelectedToken}
+                exchangeRates={exchangeRates}
+                loadingBalances={loadingBalances}
               />
             </div>
           </div>
@@ -436,7 +458,6 @@ const HomePage = () => {
   );
 };
 
-// Feature Card Component
 const FeatureCard = ({ icon, title, description }) => (
   <div className="rounded-2xl bg-[#111] border border-white/[0.08] p-6">
     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 mb-4">
@@ -447,7 +468,6 @@ const FeatureCard = ({ icon, title, description }) => (
   </div>
 );
 
-// Stat Card Component
 const StatCard = ({ icon, label, value, subtext }) => (
   <div className="rounded-2xl bg-[#111] border border-white/[0.08] p-6">
     <div className="flex items-start justify-between">
