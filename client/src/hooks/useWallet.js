@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import * as freighterApi from "@stellar/freighter-api";
+import { getWalletTokenBalances, fetchExchangeRates } from "../services/sorobanService";
 
 /**
- * Custom hook for managing Freighter wallet connection
+ * Custom hook for managing Freighter wallet connection + multi-token balances
  */
 export function useWallet() {
   const [walletAddress, setWalletAddress] = useState(null);
@@ -11,21 +12,24 @@ export function useWallet() {
   const [isFreighterInstalled, setIsFreighterInstalled] = useState(true);
   const [checkingInstallation, setCheckingInstallation] = useState(true);
 
+  // Multi-currency state
+  const [tokenBalances, setTokenBalances] = useState([]);
+  const [selectedToken, setSelectedToken] = useState(null);
+  const [exchangeRates, setExchangeRates] = useState({});
+  const [loadingBalances, setLoadingBalances] = useState(false);
+
   // Check if Freighter is installed and if already connected
   useEffect(() => {
     let mounted = true;
 
     const checkFreighter = async () => {
       try {
-        // Check if Freighter is connected/installed
         const { isConnected } = await freighterApi.isConnected();
-
         if (!mounted) return;
 
         setIsFreighterInstalled(true);
         setCheckingInstallation(false);
 
-        // If connected, check if we're allowed and get the public key
         if (isConnected) {
           const { isAllowed } = await freighterApi.isAllowed();
           if (isAllowed) {
@@ -37,8 +41,6 @@ export function useWallet() {
         }
       } catch (err) {
         if (!mounted) return;
-
-        // If the error indicates Freighter is not installed
         if (err.message?.includes("Freighter") || err.message?.includes("extension")) {
           setIsFreighterInstalled(false);
         }
@@ -46,14 +48,74 @@ export function useWallet() {
       }
     };
 
-    // Small delay to let Freighter inject
     const timer = setTimeout(checkFreighter, 300);
-
     return () => {
       mounted = false;
       clearTimeout(timer);
     };
   }, []);
+
+  // Fetch token balances + exchange rates whenever wallet connects
+  useEffect(() => {
+    if (!walletAddress) {
+      setTokenBalances([]);
+      setSelectedToken(null);
+      return;
+    }
+
+    const loadBalancesAndRates = async () => {
+      setLoadingBalances(true);
+      try {
+        const [balances, rates] = await Promise.all([
+          getWalletTokenBalances(walletAddress),
+          fetchExchangeRates(),
+        ]);
+
+        setTokenBalances(balances);
+        setExchangeRates(rates);
+
+        // Auto-select first token with balance, or XLM by default
+        if (balances.length > 0 && !selectedToken) {
+          const withBalance = balances.find((b) => b.balance > 0) || balances[0];
+          setSelectedToken(withBalance);
+        }
+      } catch (err) {
+        console.error("Failed to load balances:", err);
+      } finally {
+        setLoadingBalances(false);
+      }
+    };
+
+    loadBalancesAndRates();
+  }, [walletAddress]);
+
+  // Refresh balances manually
+  const refreshBalances = useCallback(async () => {
+    if (!walletAddress) return;
+    setLoadingBalances(true);
+    try {
+      const [balances, rates] = await Promise.all([
+        getWalletTokenBalances(walletAddress),
+        fetchExchangeRates(),
+      ]);
+      setTokenBalances(balances);
+      setExchangeRates(rates);
+    } catch (err) {
+      console.error("Failed to refresh balances:", err);
+    } finally {
+      setLoadingBalances(false);
+    }
+  }, [walletAddress]);
+
+  // Get USD value of an amount in a given token
+  const getUsdValue = useCallback(
+    (amount, tokenSymbol) => {
+      const rate = exchangeRates[tokenSymbol];
+      if (!rate) return null;
+      return amount * rate;
+    },
+    [exchangeRates]
+  );
 
   // Connect wallet
   const connectWallet = useCallback(async () => {
@@ -61,7 +123,6 @@ export function useWallet() {
     setError(null);
 
     try {
-      // First check if Freighter is available
       const { isConnected } = await freighterApi.isConnected();
 
       if (!isConnected) {
@@ -70,11 +131,8 @@ export function useWallet() {
       }
 
       setIsFreighterInstalled(true);
-
-      // Request permission to access the wallet
       await freighterApi.setAllowed();
 
-      // Get the address (public key)
       const { address } = await freighterApi.getAddress();
 
       if (address) {
@@ -107,13 +165,13 @@ export function useWallet() {
     }
   }, []);
 
-  // Disconnect wallet
   const disconnectWallet = useCallback(() => {
     setWalletAddress(null);
     setError(null);
+    setTokenBalances([]);
+    setSelectedToken(null);
   }, []);
 
-  // Format address for display
   const formatAddress = useCallback((address) => {
     if (!address) return "";
     return `${address.substring(0, 6)}...${address.slice(-4)}`;
@@ -129,6 +187,14 @@ export function useWallet() {
     connectWallet,
     disconnectWallet,
     formatAddress,
+    // Multi-currency
+    tokenBalances,
+    selectedToken,
+    setSelectedToken,
+    exchangeRates,
+    loadingBalances,
+    refreshBalances,
+    getUsdValue,
   };
 }
 
